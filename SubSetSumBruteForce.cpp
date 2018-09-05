@@ -1,10 +1,9 @@
 #include <vector>
 #include <iostream>
 #include <assert.h>
-
 using namespace std;
 
-class SubSetSumBruteForce {
+class SubSetSumBruteForce{
     public:
         int solve();
         SubSetSumBruteForce(istream& in);
