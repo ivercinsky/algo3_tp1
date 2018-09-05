@@ -61,19 +61,6 @@ int SubSetSum::solveByDynamicProgramming() {
     return values[0];
 }
 
-void generate(vector<bool> &v, int tamaño, vector<vector<bool>> vs) {
-    if (v.size() == tamaño) {
-       vs.push_back(v);
-       return;
-    }
-    vector<bool> fb = v;
-    fb.push_back(false);
-    vector<bool> tb = v;
-    tb.push_back(true);
-    generate(fb, tamaño, vs);
-    generate(tb, tamaño, vs);
-}
-
 void SubSetSum::bruteForceSolution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
     if(valuesUsedInSolution.size() == tamaño) {
         cout << "Probando Solucion ";
