@@ -6,12 +6,12 @@
 #include <string>
 using namespace std;
 
-class SubSetSumBruteForce{
+class SubSetSumBackTracking{
     public:
         int solve();
         int solveWithTimeTracking();
-        SubSetSumBruteForce(istream& in);
-        SubSetSumBruteForce(int argc, char** argv);
+        SubSetSumBackTracking(istream& in);
+        SubSetSumBackTracking(int argc, char** argv);
     
     private:
         vector<int> values;
@@ -21,8 +21,7 @@ class SubSetSumBruteForce{
         void loadData(istream& input);
 };
 
-
-void SubSetSumBruteForce::loadData(istream& in) {
+void SubSetSumBackTracking::loadData(istream& in) {
     cout << "steady_clock" << endl;
     cout << chrono::steady_clock::period::num << endl;
     cout << chrono::steady_clock::period::den << endl;
@@ -40,17 +39,16 @@ void SubSetSumBruteForce::loadData(istream& in) {
     assert(agregados < tamaño || in.eof());
 }
 
-SubSetSumBruteForce::SubSetSumBruteForce(istream& in) {
-    loadData(in);
-}
-
-SubSetSumBruteForce::SubSetSumBruteForce(int argc, char** argv) {
+SubSetSumBackTracking::SubSetSumBackTracking(int argc, char** argv) {
     assert(argc == 2);
     ifstream instanceData(argv[1]);
     loadData(instanceData);
 }
+SubSetSumBackTracking::SubSetSumBackTracking(istream& in) {
+    loadData(in);
+}
 
-int SubSetSumBruteForce::solveWithTimeTracking() {
+int SubSetSumBackTracking::solveWithTimeTracking() {
     auto startSolveTime = chrono::steady_clock::now();
     int res = solve();
     auto endSolveTime = chrono::steady_clock::now();
@@ -59,7 +57,7 @@ int SubSetSumBruteForce::solveWithTimeTracking() {
     return res;
 }
 
-int SubSetSumBruteForce::solve() {
+int SubSetSumBackTracking::solve() {
     int minCardinality = tamaño;
     vector<bool> valuesUsedInSolution = vector<bool>();
     int iterationsCounter = 0;
@@ -75,7 +73,7 @@ int SubSetSumBruteForce::solve() {
 }
 
 
-void SubSetSumBruteForce::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
+void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
     if(valuesUsedInSolution.size() == tamaño) {
         //cout << "Probando Solucion ";
         //for (const bool &val : valuesUsedInSolution) {
@@ -99,12 +97,25 @@ void SubSetSumBruteForce::solution(vector<bool> &valuesUsedInSolution, int &curr
             //cout << "Solucion" << endl;
         }
         return;
+    } else {
+        //Chequear si la solucion parcial es factible o si ya tiene mas elementos que el minimo actual
+        int acum = 0;
+        int elementsUsed = 0;
+        for(int i = 0; i < valuesUsedInSolution.size() ; i++) {
+            
+            if (valuesUsedInSolution[i]) {
+                acum+=values[i];
+                elementsUsed++;
+            }
+        }
+        if (acum <= targetValue || elementsUsed <= currentMinCardinality) {
+            vector<bool> fb = valuesUsedInSolution;
+            fb.push_back(false);
+            vector<bool> tb = valuesUsedInSolution;
+            tb.push_back(true);
+            solution(fb, currentMinCardinality, iterationsCounter, solutionsCounter);
+            solution(tb, currentMinCardinality, iterationsCounter, solutionsCounter);
+        }
     }
-    vector<bool> fb = valuesUsedInSolution;
-    fb.push_back(false);
-    vector<bool> tb = valuesUsedInSolution;
-    tb.push_back(true);
-    solution(fb, currentMinCardinality, iterationsCounter, solutionsCounter);
-    solution(tb, currentMinCardinality, iterationsCounter, solutionsCounter);
 }
 
