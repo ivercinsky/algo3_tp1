@@ -16,6 +16,6 @@ run: all
 	clear
 	./$(BIN)
 
-instancia1: all
+instancia%: all
 	clear
-	cat instancias/instancia1.txt | ./$(BIN)
+	cat instancias/$@.txt | ./$(BIN)
