@@ -7,6 +7,7 @@ using namespace std;
 
 int main(int argc, char **argv) {
     SubSetSumBruteForce problem(cin);
-    cout << problem.solve() << endl;
+    int res = problem.solveWithTimeTracking();
+    cout << "Respuesta al problema " << res << endl;
 }
 
