@@ -4,16 +4,11 @@
 
 using namespace std;
 
-class SubSetSum {
+class SubSetSumBruteForce {
     public:
-        int solveByBruteForce();
-
-        int solveByBacktracking();
-
-        int solveByDynamicProgramming();
-
-        SubSetSum();
-        SubSetSum(istream& in);
+        int solve();
+        SubSetSumBruteForce(istream& in);
+    
     private:
         vector<int> values;
         int tamaño;
@@ -21,12 +16,7 @@ class SubSetSum {
         void bruteForceSolution(vector <bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter);
 };
 
-SubSetSum::SubSetSum(void) {
-    values = vector<int>();
-    targetValue = 0;
-}
-
-SubSetSum::SubSetSum(istream& in) {
+SubSetSumBruteForce::SubSetSumBruteForce(istream& in) {
     in >> tamaño;
     in >> targetValue;
     int agregados = 0;
@@ -39,7 +29,7 @@ SubSetSum::SubSetSum(istream& in) {
     assert(agregados < tamaño || cin.eof());
 }
 
-int SubSetSum::solveByBruteForce() {
+int SubSetSumBruteForce::solve() {
     int minCardinality = tamaño;
     vector<bool> valuesUsedInSolution = vector<bool>();
     int iterationsCounter = 0;
@@ -53,15 +43,8 @@ int SubSetSum::solveByBruteForce() {
     return minCardinality;
 }
 
-int SubSetSum::solveByBacktracking() {
-    return values[0];
-}
 
-int SubSetSum::solveByDynamicProgramming() {
-    return values[0];
-}
-
-void SubSetSum::bruteForceSolution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
+void SubSetSumBruteForce::bruteForceSolution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
     if(valuesUsedInSolution.size() == tamaño) {
         cout << "Probando Solucion ";
         for (const bool &val : valuesUsedInSolution) {
