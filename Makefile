@@ -3,7 +3,7 @@ CFLAGS+= -Wall -std=c++11
 CC=g++
 SRCS=main.cpp
 BIN=tp1
-INSTANCIAS= instancia1 instancia2 instancia3
+INSTANCIAS= $(ls instancias)
 
 all: clean tp1
 
@@ -17,7 +17,10 @@ run: all
 	clear
 	./$(BIN)
 
-instancia%: all
-	./$(BIN) instancias/$@.txt >> experimentacion/$@.out
+instancia%:
+	./$(BIN) instancias/$@ >> experimentacion/$@.out
 
-experimentacion: $(INSTANCIAS)
+experimentos: all
+	
+
+	
