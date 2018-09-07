@@ -15,7 +15,7 @@ class SubSetSumBackTracking{
     
     private:
         vector<int> values;
-        int tamaño;
+        unsigned int size;
         int targetValue;
         void solution(vector <bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter);
         void loadData(istream& input);
@@ -27,16 +27,16 @@ void SubSetSumBackTracking::loadData(istream& in) {
     cout << chrono::steady_clock::period::den << endl;
     cout << "steady = " << boolalpha << chrono::steady_clock::is_steady << endl << endl;
 
-    in >> tamaño;
+    in >> size;
     in >> targetValue;
-    int agregados = 0;
-    while(!in.eof() && agregados < tamaño) {
+    unsigned int agregados = 0;
+    while(!in.eof() && agregados < size) {
         int input;
         in >> input;
         values.push_back(input);
         agregados++;
     }
-    assert(agregados < tamaño || in.eof());
+    assert(agregados < size || in.eof());
 }
 
 SubSetSumBackTracking::SubSetSumBackTracking(int argc, char** argv) {
@@ -58,7 +58,7 @@ int SubSetSumBackTracking::solveWithTimeTracking() {
 }
 
 int SubSetSumBackTracking::solve() {
-    int minCardinality = tamaño;
+    int minCardinality = size;
     vector<bool> valuesUsedInSolution = vector<bool>();
     int iterationsCounter = 0;
     int solutionsCounter = 0;
@@ -74,7 +74,7 @@ int SubSetSumBackTracking::solve() {
 
 
 void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
-    if(valuesUsedInSolution.size() == tamaño) {
+    if(valuesUsedInSolution.size() == size) {
         //cout << "Probando Solucion ";
         //for (const bool &val : valuesUsedInSolution) {
         //    cout << val << " ";
@@ -82,7 +82,7 @@ void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &cu
         iterationsCounter++;
         int elementsUsed = 0;
         int acum = 0;
-        for(int i=0;i<tamaño;i++){
+        for(unsigned int i=0;i<size;i++){
             if(valuesUsedInSolution[i]) {
                 acum += values[i];
                 elementsUsed++;
@@ -101,7 +101,7 @@ void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &cu
         //Chequear si la solucion parcial es factible o si ya tiene mas elementos que el minimo actual
         int acum = 0;
         int elementsUsed = 0;
-        for(int i = 0; i < valuesUsedInSolution.size() ; i++) {
+        for(unsigned int i = 0; i < valuesUsedInSolution.size() ; i++) {
             
             if (valuesUsedInSolution[i]) {
                 acum+=values[i];
@@ -109,10 +109,15 @@ void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &cu
             }
         }
         if (acum <= targetValue || elementsUsed <= currentMinCardinality) {
+            /*
+            *
+            * 
+            * PROBAR COMPLETANDO PRIMERO CON TRUE Y LUEGO CON FALSE
+            * */
             vector<bool> fb = valuesUsedInSolution;
-            fb.push_back(false);
+            fb.push_back(true);
             vector<bool> tb = valuesUsedInSolution;
-            tb.push_back(true);
+            tb.push_back(false);
             solution(fb, currentMinCardinality, iterationsCounter, solutionsCounter);
             solution(tb, currentMinCardinality, iterationsCounter, solutionsCounter);
         }

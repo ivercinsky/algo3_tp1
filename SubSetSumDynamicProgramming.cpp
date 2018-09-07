@@ -6,12 +6,12 @@
 #include <string>
 using namespace std;
 
-class SubSetSumBruteForce{
+class SubSetSumDynamicProgramming{
     public:
         int solve();
         int solveWithTimeTracking();
-        SubSetSumBruteForce(istream& in);
-        SubSetSumBruteForce(int argc, char** argv);
+        SubSetSumDynamicProgramming(istream& in);
+        SubSetSumDynamicProgramming(int argc, char** argv);
     
     private:
         vector<int> values;
@@ -21,8 +21,7 @@ class SubSetSumBruteForce{
         void loadData(istream& input);
 };
 
-
-void SubSetSumBruteForce::loadData(istream& in) {
+void SubSetSumDynamicProgramming::loadData(istream& in) {
     cout << "steady_clock" << endl;
     cout << chrono::steady_clock::period::num << endl;
     cout << chrono::steady_clock::period::den << endl;
@@ -40,17 +39,16 @@ void SubSetSumBruteForce::loadData(istream& in) {
     assert(agregados < size || in.eof());
 }
 
-SubSetSumBruteForce::SubSetSumBruteForce(istream& in) {
-    loadData(in);
-}
-
-SubSetSumBruteForce::SubSetSumBruteForce(int argc, char** argv) {
+SubSetSumDynamicProgramming::SubSetSumDynamicProgramming(int argc, char** argv) {
     assert(argc == 2);
     ifstream instanceData(argv[1]);
     loadData(instanceData);
 }
+SubSetSumDynamicProgramming::SubSetSumDynamicProgramming(istream& in) {
+    loadData(in);
+}
 
-int SubSetSumBruteForce::solveWithTimeTracking() {
+int SubSetSumDynamicProgramming::solveWithTimeTracking() {
     auto startSolveTime = chrono::steady_clock::now();
     int res = solve();
     auto endSolveTime = chrono::steady_clock::now();
@@ -59,7 +57,7 @@ int SubSetSumBruteForce::solveWithTimeTracking() {
     return res;
 }
 
-int SubSetSumBruteForce::solve() {
+int SubSetSumDynamicProgramming::solve() {
     int minCardinality = size;
     vector<bool> valuesUsedInSolution = vector<bool>();
     int iterationsCounter = 0;
@@ -75,36 +73,10 @@ int SubSetSumBruteForce::solve() {
 }
 
 
-void SubSetSumBruteForce::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
-    if(valuesUsedInSolution.size() == size) {
-        //cout << "Probando Solucion ";
-        //for (const bool &val : valuesUsedInSolution) {
-        //    cout << val << " ";
-        //}
-        iterationsCounter++;
-        int elementsUsed = 0;
-        int acum = 0;
-        for(unsigned int i=0;i<size;i++){
-            if(valuesUsedInSolution[i]) {
-                acum += values[i];
-                elementsUsed++;
-            }    
-        }
-        //cout << "el acumulado fue " << acum << " y el target es " << targetValue << endl;
-        if (acum == targetValue) {
-            if (currentMinCardinality > elementsUsed) {
-                currentMinCardinality = elementsUsed;
-            }
-            solutionsCounter++;
-            //cout << "Solucion" << endl;
-        }
-        return;
-    }
-    vector<bool> fb = valuesUsedInSolution;
-    fb.push_back(false);
-    vector<bool> tb = valuesUsedInSolution;
-    tb.push_back(true);
-    solution(fb, currentMinCardinality, iterationsCounter, solutionsCounter);
-    solution(tb, currentMinCardinality, iterationsCounter, solutionsCounter);
+void SubSetSumDynamicProgramming::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
+    
 }
+
+
+
 

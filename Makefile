@@ -1,5 +1,5 @@
 .PHONY : all clean run
-CFLAGS+= -Wall -std=c++11
+CFLAGS+= -Wall -std=c++11 -g
 CC=g++
 SRCS=main.cpp
 BIN=tp1

@@ -1,4 +1,5 @@
 tp1
 *.o
 tp1*
-experimentacion
+experimentacion/*
+.vscode
