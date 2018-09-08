@@ -1,20 +1,42 @@
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
+
+vector<vector<int>> datos;
+
+int solucion(int i, int v, vector<int>& values) {
+	if (datos[i][v] != -1) return datos[i][v];
+	
+	int res;
+	if (v == 0) res = 0;
+	else if (i >= values.size()) res =  0;
+	else if (values[i] == v) res =  1;
+	else if (values[i] > v) {
+		res = solucion(i+1,v,values);
+	}
+	else if (values[i] < v) {
+		res =  max(1 + solucion(i+1,v-values[i],values), solucion(i+1,v,values));
+	}
+	datos[i][v] = res;
+	return res;
+}
+
+void pd() {
+    int n = 7;
+    vector<int> values({5,4,3,2});
+
+    datos = vector<vector<int>>(values.size()+1,vector<int>(n+1,-1));
+    
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    cout<<solucion(0,n,values)<<endl;
+}
+
 int main() {
     pd();
 }
 
-void pd() {
-    int n = 3;
-    int size = 5;
-    vector<vector<vector<int>>> M(n+1,vector<vector<int>>(size+1, vector<int>()));
-    vector<int> values {2,3,4};
-    for(int i = 1; i<=n; i++) {
-        for(int j = 1; j<=size; j++) {
-             
-        }
-    }
 
-}
