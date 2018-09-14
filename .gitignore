@@ -1,6 +1,5 @@
 tp1
 *.o
 tp1*
-experimentacion/*
 .vscode
 instanciaspython
