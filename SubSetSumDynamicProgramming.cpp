@@ -53,7 +53,7 @@ int SubSetSumDynamicProgramming::solveWithTimeTracking() {
     int res = solve();
     auto endSolveTime = chrono::steady_clock::now();
     auto diffTime = endSolveTime - startSolveTime;
-    cout << "El Tiempo Utilizado fue " << chrono::duration <double, milli> (diffTime).count() << "ms" << endl;
+    cout << chrono::duration <double, milli> (diffTime).count() << endl;
     return res;
 }
 
@@ -63,10 +63,10 @@ int SubSetSumDynamicProgramming::solve() {
     int iterationsCounter = 0;
     int solutionsCounter = 0;
     solution(valuesUsedInSolution, minCardinality, iterationsCounter, solutionsCounter);
-    cout << "Probo " << iterationsCounter << " Combinaciones" << endl;
-    cout << "Encontro " << solutionsCounter << " Soluciones" << endl;
+    //cout << "Probo " << iterationsCounter << " Combinaciones" << endl;
+    //cout << "Encontro " << solutionsCounter << " Soluciones" << endl;
     if (solutionsCounter > 0) {
-        cout << "La minima cantidad de elementos necesaria es " << minCardinality << endl;
+        //cout << "La minima cantidad de elementos necesaria es " << minCardinality << endl;
         return minCardinality;
     }
     return 0;

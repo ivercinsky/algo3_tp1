@@ -12,26 +12,22 @@ class SubSetSumBackTracking{
         int solveWithTimeTracking();
         SubSetSumBackTracking(istream& in);
         SubSetSumBackTracking(int argc, char** argv);
+        SubSetSumBackTracking(unsigned int psize, unsigned int ptargetValue, vector<unsigned int>& pvalues);
     
     private:
-        vector<int> values;
+        vector<unsigned int> values;
         unsigned int size;
-        int targetValue;
-        void solution(vector <bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter);
+        unsigned int targetValue;
+        void solution(vector <bool> &valuesUsedInSolution, unsigned int &currentMinCardinality, unsigned int &iterationsCounter, unsigned int &solutionsCounter);
         void loadData(istream& input);
 };
 
 void SubSetSumBackTracking::loadData(istream& in) {
-    cout << "steady_clock" << endl;
-    cout << chrono::steady_clock::period::num << endl;
-    cout << chrono::steady_clock::period::den << endl;
-    cout << "steady = " << boolalpha << chrono::steady_clock::is_steady << endl << endl;
-
     in >> size;
     in >> targetValue;
     unsigned int agregados = 0;
     while(!in.eof() && agregados < size) {
-        int input;
+        unsigned int input;
         in >> input;
         values.push_back(input);
         agregados++;
@@ -48,40 +44,60 @@ SubSetSumBackTracking::SubSetSumBackTracking(istream& in) {
     loadData(in);
 }
 
+SubSetSumBackTracking::SubSetSumBackTracking(unsigned int psize, unsigned int ptargetValue, vector<unsigned int>& pvalues) {
+    size = psize;
+    targetValue = ptargetValue;
+    values = pvalues;
+} 
+
 int SubSetSumBackTracking::solveWithTimeTracking() {
     auto startSolveTime = chrono::steady_clock::now();
     int res = solve();
     auto endSolveTime = chrono::steady_clock::now();
     auto diffTime = endSolveTime - startSolveTime;
-    cout << "El Tiempo Utilizado fue " << chrono::duration <double, milli> (diffTime).count() << "ms" << endl;
+    //cout << "El Tiempo Utilizado fue " << chrono::duration <double, milli> (diffTime).count() << "ms" << endl;
+    cout << chrono::duration <double, milli> (diffTime).count();
     return res;
 }
 
 int SubSetSumBackTracking::solve() {
-    int minCardinality = size;
+    unsigned int minCardinality = size;
     vector<bool> valuesUsedInSolution = vector<bool>();
-    int iterationsCounter = 0;
-    int solutionsCounter = 0;
-    solution(valuesUsedInSolution, minCardinality, iterationsCounter, solutionsCounter);
-    cout << "Probo " << iterationsCounter << " Combinaciones" << endl;
-    cout << "Encontro " << solutionsCounter << " Soluciones" << endl;
-    if (solutionsCounter > 0) {
-        cout << "La minima cantidad de elementos necesaria es " << minCardinality << endl;
-        return minCardinality;
+    unsigned int iterationsCounter = 0;
+    unsigned int solutionsCounter = 0;
+    //Existe Solucion Posible? Suma de los valores es > al target. No es garantia, pues puede haber huecos. Pero si ni siquiera usando todos los elementos llegamos al target, no hay solucion
+    unsigned int acum = 0;
+    for (unsigned int i = 0; i < values.size() ; i++) {
+        acum += values[i];
     }
-    return 0;
+    if (acum > targetValue) {
+        //Los elementos suman un valor mayor al esperado.
+        solution(valuesUsedInSolution, minCardinality, iterationsCounter, solutionsCounter);
+        //cout << "Probo " << iterationsCounter << " Combinaciones" << endl;
+        //cout << "Encontro " << solutionsCounter << " Soluciones" << endl;
+        if (solutionsCounter > 0) {
+            //cout << "La minima cantidad de elementos necesaria es " << minCardinality << endl;
+            return minCardinality;
+        }
+        return 0;
+    } else if (acum == targetValue) {
+        //Todos los elementos suma un valor menor al buscado, luego no existe sub set que sume el valor.
+        return values.size();
+    } else {
+        return 0;
+    }
 }
 
 
-void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &currentMinCardinality, int &iterationsCounter, int &solutionsCounter) {
+void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, unsigned int &currentMinCardinality, unsigned int &iterationsCounter, unsigned int &solutionsCounter) {
     if(valuesUsedInSolution.size() == size) {
         //cout << "Probando Solucion ";
         //for (const bool &val : valuesUsedInSolution) {
         //    cout << val << " ";
         //}
         iterationsCounter++;
-        int elementsUsed = 0;
-        int acum = 0;
+        unsigned int elementsUsed = 0;
+        unsigned int acum = 0;
         for(unsigned int i=0;i<size;i++){
             if(valuesUsedInSolution[i]) {
                 acum += values[i];
@@ -109,15 +125,10 @@ void SubSetSumBackTracking::solution(vector<bool> &valuesUsedInSolution, int &cu
             }
         }
         if (acum <= targetValue || elementsUsed <= currentMinCardinality) {
-            /*
-            *
-            * 
-            * PROBAR COMPLETANDO PRIMERO CON TRUE Y LUEGO CON FALSE
-            * */
             vector<bool> fb = valuesUsedInSolution;
-            fb.push_back(true);
+            fb.push_back(false);
             vector<bool> tb = valuesUsedInSolution;
-            tb.push_back(false);
+            tb.push_back(true);
             solution(fb, currentMinCardinality, iterationsCounter, solutionsCounter);
             solution(tb, currentMinCardinality, iterationsCounter, solutionsCounter);
         }

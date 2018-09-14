@@ -4,6 +4,7 @@ CC=g++
 SRCS=main.cpp
 BIN=tp1
 INSTANCIAS= $(ls instancias)
+INSTANCIASPYTHON = $(make $(ls instanciaspython)
 
 all: clean tp1
 
@@ -17,10 +18,11 @@ run: all
 	clear
 	./$(BIN)
 
-instancia%:
-	./$(BIN) instancias/$@ >> experimentacion/$@.out
+instancia%: all
+	cat instanciaspython/$@ | ./$(BIN) fb >> experimentacion/salidaFB.out
+
 
 experimentos: all
-	
+	$(INSTANCIASPYTHON)
 
 	
